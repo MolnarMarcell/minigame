@@ -23,7 +23,7 @@ body {
     display: grid;
     place-items: center;
     padding: 32px 18px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(107, 79, 255, 0.2), transparent 55%), #10101a;
+    background: radial-gradient(ellipse at 50% 0%, rgba(254, 254, 255, 0.055), transparent 55%), #10101a;
 }
 
 #root {
@@ -52,7 +52,6 @@ h1 {
     margin: 28px auto 0;
     padding: 28px;
     border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 28px;
     background: linear-gradient(145deg, rgba(35, 34, 54, 0.96), rgba(24, 24, 39, 0.96));
     box-shadow:
         0 24px 80px rgba(0, 0, 0, 0.38),
@@ -68,12 +67,15 @@ h1 {
 .board-row:first-child .square {
     border-top: 0;
 }
+
 .board-row:last-child .square {
     border-bottom: 0;
 }
+
 .board-row .square:first-child {
     border-left: 0;
 }
+
 .board-row .square:last-child {
     border-right: 0;
 }
@@ -115,11 +117,12 @@ h1 {
 .square.player-x {
     color: #a99bff;
 }
+
 .square.player-o {
     color: #62ded1;
 }
 
-.board > div:not(.board-row) {
+.board>div:not(.board-row) {
     margin-top: 22px;
     color: #fff;
     text-align: center;
@@ -157,6 +160,7 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {

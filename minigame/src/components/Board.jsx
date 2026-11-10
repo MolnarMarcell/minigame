@@ -1,20 +1,10 @@
 ﻿import { useRef, useState } from "react";
 import { PLAYER_O, PLAYER_X, Square } from "./Square";
+import { getWinner } from "../utils/gameUtils";
 
 const BOARD_SIDES = 3;
 const BOARD_INDICES = [...Array(BOARD_SIDES).keys()];
 const CELL_COUNT = BOARD_SIDES * BOARD_SIDES;
-
-const WIN_POSITIONS = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-];
 
 export function Board() {
     const [status, setStatus] = useState(new Array(CELL_COUNT).fill(undefined));
@@ -26,37 +16,20 @@ export function Board() {
     function handleClick(idx, player) {
         if (player !== PLAYER_O && player !== PLAYER_X) return;
 
+        if (gameOver) return;
+
         if (lastPlayer.current === player) return;
 
         if (status[idx]) return;
 
-        if (winner) return;
-
         lastPlayer.current = player;
         const newStatus = status.map((value, index) => (index === idx ? player : value));
-        win_check(newStatus, player);
-        console.log(newStatus);
+        const newWinner = getWinner(newStatus);
+
         setStatus(newStatus);
         setLastCell(idx);
-    }
-
-    function win_check(newStatus, player) {
-        const win_array = WIN_POSITIONS.map((pos) => {
-            const c1 = newStatus[pos[0]];
-            const c2 = newStatus[pos[1]];
-            const c3 = newStatus[pos[2]];
-            return c1 && c1 === c2 && c1 === c3 ? true : false;
-        });
-        console.log(newStatus, win_array);
-        const isGameOver = win_array.some((value) => value);
-        if (isGameOver) {
-            setWinner(player);
-            setGameOver(true);
-            return;
-        }
-        if (newStatus.every((cell) => cell)) {
-            setGameOver(true);
-        }
+        if (newWinner) setWinner(newWinner);
+        if (newWinner || newStatus.every(Boolean)) setGameOver(true);
     }
 
     function handlePlayAgain() {
@@ -66,6 +39,10 @@ export function Board() {
         setLastCell(undefined);
         lastPlayer.current = undefined;
     }
+
+
+
+
 
     return (
         <div className="board">
